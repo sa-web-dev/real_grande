@@ -1,5 +1,4 @@
 
-import logo from './logo.svg';
   import './App.css';
   import Header from './components/Header';
   import Footer from './components/Footer';
@@ -11,7 +10,8 @@ import logo from './logo.svg';
 import SearchedHouse from './components/SearchedHouse';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
-
+import axios from 'axios'
+import EnquiryList from './components/EnquiryList';
 
   function App() {
 
@@ -22,8 +22,8 @@ import Login from './components/Login';
     useEffect(() => {
       console.log('in useEffect');
       const fetchData = async ()=>{
-      let resp =  await fetch('/houses.json');
-      let data = await resp.json();
+      let resp =  await axios.get(process.env.REACT_APP_BACKEND_URL);
+      let data = await resp.data;
       // console.log(' date from json - ');
       console.log(data);
       setHousesData(data);    
@@ -44,10 +44,12 @@ import Login from './components/Login';
             <SearchFilter houses={housesData} />
                 <Routes>
                   <Route path='/' element= {<House houseinfo={housesData[1]}/>} />
-                  <Route path='searchresults/:county' element={<SearchResults houses={housesData}/>} />
+                  <Route path='searchResults/:county' element={<SearchResults houses={housesData}/>} />
                   <Route path='searchedHouse/:id' element={<SearchedHouse houses={housesData}/>} />
                   <Route path='/signup' element={<SignUp/>} />
                   <Route path='/login' element={<Login/>}/>
+                  <Route path='/enquiries'  element={<EnquiryList/>}/>
+
                 </Routes>          
             <Footer/>
       </div>
